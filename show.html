@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>显示端</title>
+        <link rel="stylesheet" type="text/css" href="lib/ckplayer.css" />
+        <script type="text/javascript" charset="utf-8" src="lib/ckplayer.js"></script>
+        <style>
+            .video {
+                margin-right: 20px;
+                width: 500px;
+                height: 300px;
+            }
+        </style>
+    </head>
+    <div style="display: flex">
+        <div class="video" id="video1"></div>
+        <div class="video" id="video2"></div>
+        <div class="video" id="video3"></div>
+    </div>
+    <body>
+        <script>
+            var player1 = new ckplayer({
+                container: "#video1",
+                video: "video/1.mp4",
+                volume: 0,
+            })
+            var player2 = new ckplayer({
+                container: "#video2",
+                video: "video/2.mp4",
+                volume: 0,
+            })
+            var player3 = new ckplayer({
+                container: "#video3",
+                video: "video/3.mp4",
+                volume: 0,
+            })
+
+            const ws = new WebSocket("ws://ws.baiyuchuan.com/ws")
+            ws.onopen = function () {
+                console.log("显示端已连接....")
+            }
+            ws.onmessage = function (e) {
+                console.log(e.data)
+                const data = JSON.parse(e.data)
+                switch (data.msg) {
+                    case "start1":
+                        player1.play()
+                        break
+                    case "stop1":
+                        player1.pause()
+                        break
+                    case "start2":
+                        player2.play()
+                        break
+                    case "stop2":
+                        player2.pause()
+                        break
+                    case "start3":
+                        player3.play()
+                        break
+                    case "stop3":
+                        player3.pause()
+                        break
+                }
+            }
+        </script>
+    </body>
+</html>

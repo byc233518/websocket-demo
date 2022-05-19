@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>控制端</title>
+    </head>
+
+    <div>
+        <h2>视频1</h2>
+        <button onclick="sendMsg('start1')">播放</button>
+        <button onclick="sendMsg('stop1')">暂停</button>
+    </div>
+    <div>
+        <h2>视频2</h2>
+        <button onclick="sendMsg('start2')">播放</button>
+        <button onclick="sendMsg('stop2')">暂停</button>
+    </div>
+    <div>
+        <h2>视频3</h2>
+        <button onclick="sendMsg('start3')">播放</button>
+        <button onclick="sendMsg('stop3')">暂停</button>
+    </div>
+    <body>
+        <script>
+            const ws = new WebSocket("ws://ws.baiyuchuan.com/ws")
+
+            ws.onopen = function () {
+                console.log("控制端连接成功...")
+            }
+
+            ws.onmessage = function (e) {
+                console.log(e.data)
+            }
+
+            function sendMsg(msg) {
+                ws.send(
+                    JSON.stringify({
+                        type: "control",
+                        content: msg,
+                    })
+                )
+            }
+        </script>
+    </body>
+</html>
